@@ -22,9 +22,8 @@ class Apunte extends React.Component {
             nota:this.state.nota,
             tags:this.state.tags,
         }
-        this.props.modificarApunte(mandar)
+        this.props.guardarApunte(mandar)
     }
-
 
     render() {
         let { apunte } = this.props;        
@@ -45,7 +44,8 @@ class Apunte extends React.Component {
                             <div className="col s6">
                                 <a className="waves-effect waves-light btn green lighten-1" onClick={this.mandarPadre}>
                                 <i className="material-icons">save</i></a>
-                                <a className="waves-effect waves-light btn green lighten-1"><i className="material-icons">delete</i></a>
+                                <a className="waves-effect waves-light btn green lighten-1" onClick={()=> {this.props.eliminarApunte(this.props.identi)}}>
+                                <i className="material-icons">delete</i></a>
                             </div>
                         </div>
                     </div>
@@ -66,8 +66,8 @@ class Apunte extends React.Component {
                             <div className="col s4">{apunte.fecha}</div>
                             <div className="col s2" />
                             <div className="col s6">
-                                <a className="waves-effect waves-light btn green lighten-1"><i className="material-icons">save</i></a>
-                                <a className="waves-effect waves-light btn green lighten-1"><i className="material-icons">delete</i></a>
+                                <a className="waves-effect waves-light btn green lighten-1" onClick={()=> {this.props.eliminarApunte(this.props.identi)}}>
+                                <i className="material-icons">delete</i></a>
                             </div>
                         </div>
                     </div>

@@ -8,7 +8,8 @@ class App extends React.Component {
     this.state = {
       apuntes: JSON.parse(localStorage.getItem("thoughts")),
     }
-    this.modificarApunte = this.modificarApunte.bind(this)
+    this.guardarApunte = this.guardarApunte.bind(this)
+    this.eliminarApunte = this.eliminarApunte.bind(this)
   }
 
   addApunte() {
@@ -35,7 +36,7 @@ class App extends React.Component {
     })
   }
 
-  modificarApunte = (apunteMod) => {
+  guardarApunte = (apunteMod) => {
     let { apuntes } = this.state
     let { nota, tags, id } = apunteMod
     apuntes[id - 1].nota = nota
@@ -47,12 +48,24 @@ class App extends React.Component {
     localStorage.setItem("thoughts",JSON.stringify(apuntes))
   }
 
+  eliminarApunte(id) {
+    let { apuntes } = this.state
+    let apuntesTemp = apuntes.filter(note => note.id !== id)
+    let i = 0
+    for (i = 0; i < apuntesTemp.length;i++){
+      if (apuntesTemp[i].id !== id){
+        apuntesTemp[i].id = i+1
+      }
+    }
+    this.setState({apuntes: apuntesTemp})
+    localStorage.setItem("thoughts",JSON.stringify(apuntesTemp))
+  }
+
   render() {
     let apuntesCards = this.state.apuntes.map(note => {
-      console.log(localStorage.getItem("thoughts"))
       return (
         <div className="col s4">
-          <Apunte identi={note.id} modificarApunte={this.modificarApunte} apunte={note} />
+          <Apunte identi={note.id} guardarApunte={this.guardarApunte} eliminarApunte={this.eliminarApunte} apunte={note} />
         </div>
       )
     })
