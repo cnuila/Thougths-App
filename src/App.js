@@ -4,16 +4,25 @@ import "./Color.css"
 
 class App extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      apuntes: [],
-
+      apuntes: [{
+        id: 1,
+        nota: "React es una biblioteca de javascript para construir interfaces de usuario.",
+        tags: "react, javascript, front-end",
+        fecha: "21/8/2020",
+      },],
     }
   }
 
   addApunte() {
     let { apuntes } = this.state;
     let index = 1;
+    let nota = "";
+    const date = new Date()
+    const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'numeric', day: '2-digit' })
+    const [{ value: month }, , { value: day }, , { value: year }] = dateTimeFormat.formatToParts(date)
+    let fecha =  `${day}/${month}/${year}`
     let nuevoApuntes = []
     if (apuntes.length !== 0) {
       index = apuntes.length + 1
@@ -22,14 +31,22 @@ class App extends React.Component {
       ]
     }
 
-    nuevoApuntes.push({ id: index })
+    nuevoApuntes.push({ id: index, nota: nota, fecha:fecha})
 
     this.setState({
       apuntes: nuevoApuntes,
     })
+    console.log(this.state.apuntes)
   }
 
   render() {
+    let apuntesCards = this.state.apuntes.map(note => {
+      return (
+        <div className="col s4">
+          <Apunte apunte={note} />
+        </div>
+      )
+    })
     return (
       <div className="App">
         <nav>
@@ -48,10 +65,12 @@ class App extends React.Component {
             </div>
           </div>
         </nav>
-
+        <div className="row"></div>
+        <div className="row"></div>
+        <div className="row"></div>
         <div className="container">
           <div className="row">
-            <Apunte/>
+            {apuntesCards}
           </div>
         </div>
 
