@@ -7,7 +7,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       apuntes: JSON.parse(localStorage.getItem("thoughts")),
-      etiquetas: JSON.parse(localStorage.getItem("etiquetas")),
+      etiquetas: JSON.parse(localStorage.getItem("etiquetas"))
     }
     this.guardarApunte = this.guardarApunte.bind(this)
     this.eliminarApunte = this.eliminarApunte.bind(this)
@@ -24,11 +24,13 @@ class App extends React.Component {
     const [{ value: month }, , { value: day }, , { value: year }] = dateTimeFormat.formatToParts(date)
     let fecha = `${day}/${month}/${year}`
     let nuevoApuntes = []
-    if (apuntes.length !== 0) {
-      index = apuntes.length + 1
-      nuevoApuntes = [
-        ...apuntes
-      ]
+    if (apuntes !== null) {
+      if (apuntes.length !== 0) {
+        index = apuntes.length + 1
+        nuevoApuntes = [
+          ...apuntes
+        ]
+      }
     }
 
     nuevoApuntes.push({ id: index, nota: nota, tags: tag, fecha: fecha, listo: listo })
@@ -44,7 +46,7 @@ class App extends React.Component {
     apuntes[id - 1].tags = tags
     apuntes[id - 1].listo = true
     let nuevasEti = []
-    if (etiquetas !== null){
+    if (etiquetas !== null) {
       nuevasEti = etiquetas.concat(tags.split(","))
     } else {
       nuevasEti = tags.split(",")
@@ -69,20 +71,21 @@ class App extends React.Component {
         apuntesTemp[i].id = i + 1
       }
     }
-
-    this.setState({ apuntes: apuntesTemp})
+    this.setState({ apuntes: apuntesTemp })
     localStorage.setItem("thoughts", JSON.stringify(apuntesTemp))
   }
-  
 
   render() {
-    let apuntesCards = this.state.apuntes.map(note => {
-      return (
-        <div className="col s4">
-          <Apunte identi={note.id} guardarApunte={this.guardarApunte} eliminarApunte={this.eliminarApunte} apunte={note} />
-        </div>
-      )
-    })
+    let apuntesCards
+    if (this.state.apuntes !== null) {
+      apuntesCards = this.state.apuntes.map(note => {
+        return (
+          <div key={note.id} className="col s4">
+            <Apunte identi={note.id} guardarApunte={this.guardarApunte} eliminarApunte={this.eliminarApunte} apunte={note} />
+          </div>
+        )
+      });
+    }
     return (
       <div className="App">
         <nav>
