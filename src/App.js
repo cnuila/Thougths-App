@@ -7,6 +7,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       apuntes: JSON.parse(localStorage.getItem("thoughts")),
+      etiquetas: JSON.parse(localStorage.getItem("etiquetas")),
     }
     this.guardarApunte = this.guardarApunte.bind(this)
     this.eliminarApunte = this.eliminarApunte.bind(this)
@@ -30,36 +31,49 @@ class App extends React.Component {
       ]
     }
 
-    nuevoApuntes.push({ id: index, nota: nota, tags: tag, fecha: fecha, listo:listo })
+    nuevoApuntes.push({ id: index, nota: nota, tags: tag, fecha: fecha, listo: listo })
     this.setState({
       apuntes: nuevoApuntes,
     })
   }
 
   guardarApunte = (apunteMod) => {
-    let { apuntes } = this.state
+    let { apuntes, etiquetas } = this.state
     let { nota, tags, id } = apunteMod
     apuntes[id - 1].nota = nota
     apuntes[id - 1].tags = tags
     apuntes[id - 1].listo = true
+    let nuevasEti = []
+    if (etiquetas !== null){
+      nuevasEti = etiquetas.concat(tags.split(","))
+    } else {
+      nuevasEti = tags.split(",")
+    }
+    for (var i = nuevasEti.length - 1; i >= 0; i--) {
+      if (nuevasEti.indexOf(nuevasEti[i]) !== i) nuevasEti.splice(i, 1);
+    }
     this.setState({
       apuntes: apuntes,
+      etiquetas: nuevasEti,
     })
-    localStorage.setItem("thoughts",JSON.stringify(apuntes))
+    localStorage.setItem("thoughts", JSON.stringify(apuntes))
+    localStorage.setItem("etiquetas", JSON.stringify(nuevasEti))
   }
 
   eliminarApunte(id) {
     let { apuntes } = this.state
     let apuntesTemp = apuntes.filter(note => note.id !== id)
     let i = 0
-    for (i = 0; i < apuntesTemp.length;i++){
-      if (apuntesTemp[i].id !== id){
-        apuntesTemp[i].id = i+1
+    for (i = 0; i < apuntesTemp.length; i++) {
+      if (apuntesTemp[i].id !== id) {
+        apuntesTemp[i].id = i + 1
       }
     }
-    this.setState({apuntes: apuntesTemp})
-    localStorage.setItem("thoughts",JSON.stringify(apuntesTemp))
+
+    this.setState({ apuntes: apuntesTemp})
+    localStorage.setItem("thoughts", JSON.stringify(apuntesTemp))
   }
+  
 
   render() {
     let apuntesCards = this.state.apuntes.map(note => {
@@ -87,6 +101,7 @@ class App extends React.Component {
             </div>
           </div>
         </nav>
+        <div className="row"></div>
         <div className="row"></div>
         <div className="row"></div>
         <div className="row"></div>
