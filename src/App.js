@@ -11,18 +11,22 @@ class App extends React.Component {
         nota: "React es una biblioteca de javascript para construir interfaces de usuario.",
         tags: "react, javascript, front-end",
         fecha: "21/8/2020",
+        listo: true,
       },],
     }
+    this.modificarApunte = this.modificarApunte.bind(this)
   }
 
   addApunte() {
     let { apuntes } = this.state;
     let index = 1;
     let nota = "";
+    let tag = "";
+    let listo = false;
     const date = new Date()
     const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'numeric', day: '2-digit' })
     const [{ value: month }, , { value: day }, , { value: year }] = dateTimeFormat.formatToParts(date)
-    let fecha =  `${day}/${month}/${year}`
+    let fecha = `${day}/${month}/${year}`
     let nuevoApuntes = []
     if (apuntes.length !== 0) {
       index = apuntes.length + 1
@@ -31,19 +35,30 @@ class App extends React.Component {
       ]
     }
 
-    nuevoApuntes.push({ id: index, nota: nota, fecha:fecha})
-
+    nuevoApuntes.push({ id: index, nota: nota, tags: tag, fecha: fecha, listo:listo })
     this.setState({
       apuntes: nuevoApuntes,
     })
-    console.log(this.state.apuntes)
+  }
+
+  modificarApunte = (apunteMod) => {
+    let { apuntes } = this.state
+    let { nota, tags, id } = apunteMod
+    apuntes[id - 1].nota = nota
+    apuntes[id - 1].tags = tags
+    apuntes[id - 1].listo = true
+    this.setState({
+      apuntes: apuntes,
+    })
+    localStorage.setItem("thoughts",JSON.stringify(apuntes))
   }
 
   render() {
     let apuntesCards = this.state.apuntes.map(note => {
+      console.log(this.state.apuntes)
       return (
         <div className="col s4">
-          <Apunte apunte={note} />
+          <Apunte identi={note.id} modificarApunte={this.modificarApunte} apunte={note} />
         </div>
       )
     })
