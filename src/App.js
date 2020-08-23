@@ -6,13 +6,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      apuntes: [{
-        id: 1,
-        nota: "React es una biblioteca de javascript para construir interfaces de usuario.",
-        tags: "react, javascript, front-end",
-        fecha: "21/8/2020",
-        listo: true,
-      },],
+      apuntes: JSON.parse(localStorage.getItem("thoughts")),
     }
     this.modificarApunte = this.modificarApunte.bind(this)
   }
@@ -55,7 +49,7 @@ class App extends React.Component {
 
   render() {
     let apuntesCards = this.state.apuntes.map(note => {
-      console.log(this.state.apuntes)
+      console.log(localStorage.getItem("thoughts"))
       return (
         <div className="col s4">
           <Apunte identi={note.id} modificarApunte={this.modificarApunte} apunte={note} />
