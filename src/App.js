@@ -8,6 +8,8 @@ class App extends React.Component {
     this.state = {
       apuntes: JSON.parse(localStorage.getItem("thoughts")),
       etiquetas: JSON.parse(localStorage.getItem("etiquetas")),
+      sort: [],
+      flagArray: true,
     }
     this.guardarApunte = this.guardarApunte.bind(this)
     this.eliminarApunte = this.eliminarApunte.bind(this)
@@ -74,9 +76,39 @@ class App extends React.Component {
     localStorage.setItem("thoughts", JSON.stringify(apuntesTemp))
   }
 
+  todos = () => {
+    this.setState({ flagArray: true });
+  }
+
+  filtrar(etiqueta){
+    let { apuntes } = this.state
+    if (apuntes !== null) {
+      let filtrados = []
+      for (let i = 0; i < apuntes.length; i++) {
+        let { tags } = apuntes[i]
+        let tagsArray = tags.split(",")
+        for (let j = 0; j < tagsArray.length;j++){
+          if (tagsArray[j] === etiqueta){
+            filtrados.push(apuntes[i])
+            j = tagsArray
+          }
+        }
+      }
+      if (filtrados.length !== 0){
+        this.setState({
+          sort:filtrados,
+          flagArray:false,
+        })
+      }
+    }
+  }
+
+
+
   render() {
     let apuntesCards
     let dropEtiquetas
+    let { flagArray } = this.state
     if (this.state.apuntes !== null) {
       if (this.state.apuntes.length === 0) {
         apuntesCards = (
@@ -90,7 +122,13 @@ class App extends React.Component {
           </div>
         )
       } else {
-        apuntesCards = this.state.apuntes.map(note => {
+        let apuntesArray = []
+        if (flagArray) {
+          apuntesArray = this.state.apuntes
+        } else {
+          apuntesArray = this.state.sort
+        }
+        apuntesCards = apuntesArray.map(note => {
           return (
             <div key={note.id} className="col s12 m4">
               <Apunte identi={note.id} guardarApunte={this.guardarApunte} eliminarApunte={this.eliminarApunte} apunte={note} />
@@ -113,7 +151,7 @@ class App extends React.Component {
     }
     if (this.state.etiquetas !== null) {
       dropEtiquetas = this.state.etiquetas.map(etiqueta => {
-        return (<li><a href="#!">{etiqueta}</a></li>)
+        return (<li><a href="#!" onClick={() => this.filtrar(etiqueta)}>{etiqueta}</a></li>)
       });
     }
     return (
@@ -140,10 +178,11 @@ class App extends React.Component {
           <div className="col s6 m8"></div>
           <div className="col s6 m4">
             <a className='waves-effect waves-light btn-small dropdown-trigger btn teal darken-3' href='#' data-target='dropdown1'>
-              <i class="material-icons left">view_module</i>
+              <i className="material-icons left">view_module</i>
               Filtrar
             </a>
-            <ul id='dropdown1' class='dropdown-content'>
+            <ul id='dropdown1' className='dropdown-content'>
+              <li><a href="#!" onClick={this.todos}>Todos</a></li>
               {dropEtiquetas}
             </ul>
           </div>
