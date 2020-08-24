@@ -7,7 +7,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       apuntes: JSON.parse(localStorage.getItem("thoughts")),
-      etiquetas: JSON.parse(localStorage.getItem("etiquetas"))
+      etiquetas: JSON.parse(localStorage.getItem("etiquetas")),
     }
     this.guardarApunte = this.guardarApunte.bind(this)
     this.eliminarApunte = this.eliminarApunte.bind(this)
@@ -65,8 +65,7 @@ class App extends React.Component {
   eliminarApunte(id) {
     let { apuntes } = this.state
     let apuntesTemp = apuntes.filter(note => note.id !== id)
-    let i = 0
-    for (i = 0; i < apuntesTemp.length; i++) {
+    for (let i = 0; i < apuntesTemp.length; i++) {
       if (apuntesTemp[i].id !== id) {
         apuntesTemp[i].id = i + 1
       }
@@ -77,13 +76,44 @@ class App extends React.Component {
 
   render() {
     let apuntesCards
+    let dropEtiquetas
     if (this.state.apuntes !== null) {
-      apuntesCards = this.state.apuntes.map(note => {
-        return (
-          <div key={note.id} className="col s4">
-            <Apunte identi={note.id} guardarApunte={this.guardarApunte} eliminarApunte={this.eliminarApunte} apunte={note} />
+      if (this.state.apuntes.length === 0) {
+        apuntesCards = (
+          <div>
+            <div className="col s2 m3"></div>
+            <div className="col s8 m6">
+              <h1 className="green-text text-light-green text-lighten-1">:(</h1>
+              <h2 className="green-text text-light-green text-lighten-1">No tienes apuntes</h2>
+            </div>
+            <div className="col s2 m3"></div>
           </div>
         )
+      } else {
+        apuntesCards = this.state.apuntes.map(note => {
+          return (
+            <div key={note.id} className="col s12 m4">
+              <Apunte identi={note.id} guardarApunte={this.guardarApunte} eliminarApunte={this.eliminarApunte} apunte={note} />
+            </div>
+          )
+        });
+      }
+    }
+    if (this.state.apuntes === null) {
+      apuntesCards = (
+        <div>
+          <div className="col s2 m3"></div>
+          <div className="col s8 m6">
+            <h1 className="green-text text-light-green text-lighten-1">:(</h1>
+            <h2 className="green-text text-light-green text-lighten-1">No tienes apuntes</h2>
+          </div>
+          <div className="col s2 m3"></div>
+        </div>
+      )
+    }
+    if (this.state.etiquetas !== null) {
+      dropEtiquetas = this.state.etiquetas.map(etiqueta => {
+        return (<li><a href="#!">{etiqueta}</a></li>)
       });
     }
     return (
@@ -92,10 +122,10 @@ class App extends React.Component {
           <div className="nav-wrapper fondoVerde1">
             <div className="container">
               <div className="row">
-                <div className="col s8">
+                <div className="col s6 m8">
                   <h5>Thoughts</h5>
                 </div>
-                <div className="col s4">
+                <div className="col s6 m4">
                   <ul>
                     <a href="#" className="btn waves-effect waves-light teal darken-3" onClick={() => this.addApunte()}>Agregar <i className="material-icons right">add</i></a>
                   </ul>
@@ -106,7 +136,18 @@ class App extends React.Component {
         </nav>
         <div className="row"></div>
         <div className="row"></div>
-        <div className="row"></div>
+        <div className="row">
+          <div className="col s6 m8"></div>
+          <div className="col s6 m4">
+            <a className='waves-effect waves-light btn-small dropdown-trigger btn teal darken-3' href='#' data-target='dropdown1'>
+              <i class="material-icons left">view_module</i>
+              Filtrar
+            </a>
+            <ul id='dropdown1' class='dropdown-content'>
+              {dropEtiquetas}
+            </ul>
+          </div>
+        </div>
         <div className="row"></div>
         <div className="container">
           <div className="row">

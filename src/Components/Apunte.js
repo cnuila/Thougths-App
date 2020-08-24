@@ -32,19 +32,21 @@ class Apunte extends React.Component {
                 <div className="card">
                     <div className="card-content">
                         <div className="input-field">
-                            <textarea name="nota" id="textarea1" placeholder="Apunte" className="materialize-textarea" onChange={this.handleChange}></textarea>
+                            <textarea name="nota" id="textarea1" placeholder="Apunte" className="materialize-textarea green-text text-light-green text-darken-4" onChange={this.handleChange}></textarea>
                         </div>
                         <div className="input-field">
-                            <i className="material-icons prefix">bookmark</i>
-                            <input name="tags" id="icon_prefix" placeholder="Tags" type="text" onChange={this.handleChange}></input>
+                            <i className="material-icons prefix teal-text text-darken-3">bookmark</i>
+                            <input name="tags" className="green-text text-light-green text-darken-4" id="icon_prefix" placeholder="Tags" type="text" onChange={this.handleChange}></input>
                         </div>
                         <div className="row">
-                            <div className="col s4">{apunte.fecha}</div>
+                            <div className="col s4">
+                                <p className="green-text text-light-green text-darken-4">{apunte.fecha}</p>
+                            </div>
                             <div className="col s2" />
                             <div className="col s6">
-                                <a className="waves-effect waves-light btn green lighten-1" onClick={this.mandarPadre}>
+                                <a className="waves-effect waves-light btn teal darken-3" onClick={this.mandarPadre}>
                                 <i className="material-icons">save</i></a>
-                                <a className="waves-effect waves-light btn green lighten-1" onClick={()=> {this.props.eliminarApunte(this.props.identi)}}>
+                                <a className="waves-effect waves-light btn teal darken-3" onClick={()=> {this.props.eliminarApunte(this.props.identi)}}>
                                 <i className="material-icons">delete</i></a>
                             </div>
                         </div>
@@ -56,18 +58,20 @@ class Apunte extends React.Component {
                 <div className="card">
                     <div className="card-content">
                         <div className="col s12">
-                            <p>{apunte.nota}</p>
+                            <p className="green-text text-light-green text-darken-4">{apunte.nota}</p>
                         </div>
                         <div className="row"></div>
-                        <div className="col s2"><i className="material-icons">bookmark</i></div>
-                        <div className="col s10"><p>{apunte.tags}</p></div>
+                        <div className="col s2"><i className="small material-icons teal-text text-darken-3">bookmark</i></div>
+                        <div className="col s10"><p className="green-text text-light-green text-darken-4">{apunte.tags}</p></div>
                         <div className="row"></div>
                         <div className="row">
-                            <div className="col s4">{apunte.fecha}</div>
+                            <div className="col s4">
+                                <p className="green-text text-light-green text-darken-4">{apunte.fecha}</p>
+                            </div>
                             <div className="col s2" />
                             <div className="col s6">
-                                <a className="waves-effect waves-light btn green lighten-1" onClick={()=> {this.props.eliminarApunte(this.props.identi)}}>
-                                <i className="material-icons">delete</i></a>
+                                <a className="waves-effect waves-light btn teal darken-3" onClick={()=> {this.props.eliminarApunte(this.props.identi)}}>
+                                <i className="small material-icons">delete</i></a>
                             </div>
                         </div>
                     </div>
