@@ -66,6 +66,22 @@ class App extends React.Component {
 
   eliminarApunte(id) {
     let { apuntes } = this.state
+
+    /*let etiquetaTemp = etiquetas
+
+    for (let i = 0; i < etiquetaTemp.length; i++) {
+      let arrayTag = apuntes[id - 1].tags.split(",")
+      for (let j = 0; j < arrayTag.length; j++) {
+        if (arrayTag[j] === etiquetaTemp[i]) {
+          let index = etiquetaTemp.indexOf(etiquetaTemp[i]);
+          if (index !== -1) {
+            etiquetaTemp.splice(index, 1);
+          }
+          j = arrayTag.length
+        }
+      }
+    }*/
+
     let apuntesTemp = apuntes.filter(note => note.id !== id)
     for (let i = 0; i < apuntesTemp.length; i++) {
       if (apuntesTemp[i].id !== id) {
@@ -80,24 +96,24 @@ class App extends React.Component {
     this.setState({ flagArray: true });
   }
 
-  filtrar(etiqueta){
+  filtrar(etiqueta) {
     let { apuntes } = this.state
     if (apuntes !== null) {
       let filtrados = []
       for (let i = 0; i < apuntes.length; i++) {
         let { tags } = apuntes[i]
         let tagsArray = tags.split(",")
-        for (let j = 0; j < tagsArray.length;j++){
-          if (tagsArray[j] === etiqueta){
+        for (let j = 0; j < tagsArray.length; j++) {
+          if (tagsArray[j] === etiqueta) {
             filtrados.push(apuntes[i])
             j = tagsArray
           }
         }
       }
-      if (filtrados.length !== 0){
+      if (filtrados.length !== 0) {
         this.setState({
-          sort:filtrados,
-          flagArray:false,
+          sort: filtrados,
+          flagArray: false,
         })
       }
     }
